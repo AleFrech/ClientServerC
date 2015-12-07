@@ -24,7 +24,7 @@ int main() {
     // clear address structure
     bzero((char *) &serv_addr, sizeof(serv_addr));
 
-    portno = 1070;
+    portno = 1060;
 
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_addr.s_addr = INADDR_ANY;
@@ -67,26 +67,24 @@ int main() {
            }
            if(strcmp(tokens,"Delete")==0){
                tokens = strtok (NULL,"\n");
+               printf("%s\n",tokens);
                string u=fm->getUsers();
-               char users[u.length()+1];
-               strcpy(users,u.c_str());
-               char * userlist=strtok(users,";");
+               vector<string>userlist=fm->split(u,";");
                fm->reWriteFile();
                string res="NO";
-               char * output=NULL;
-               printf("%s\n",userlist);
-               while (userlist != NULL)
-               {
-                   output=strstr (userlist,tokens);
-                   if(output){
-                       res="Yes";
+               vector<string> tok;
+               for(int i=0;i<userlist.size();i++){
+                   if(userlist[i].find(string(tokens))){
+                       fm->writeUser(userlist[i]);
                    }else{
-                       fm->writeUser(string(userlist));
+                       res="Yes";
                    }
-                   userlist = strtok (NULL, ";");
                }
                strcpy(buf,res.c_str());
                rc=send(newsockfd, buf,sizeof(buf),0);
+           }
+           if(strcmp(tokens,"Email")==0){
+
            }
        }
          if (rc == 0) {

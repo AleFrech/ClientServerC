@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
     struct sockaddr_in serv_addr;
     struct hostent *server;
     char buf[2042];
-    portno = 1070;
+    portno = 1060;
     fd = socket(AF_INET, SOCK_STREAM, 0);
     if (fd < 0)
        printf("%s\n","ERROR opening socket");
@@ -86,6 +86,7 @@ int main(int argc, char *argv[]) {
                 strcpy(buf, userToShow.c_str());
                 write(fd, buf, sizeof(buf));
                 read(fd, buf, sizeof(buf));
+                printf("%s\n",buf);
                 if (strcmp(buf, " ") != 0){
                     char * tokens=strtok(buf,",");
 
@@ -121,6 +122,25 @@ int main(int argc, char *argv[]) {
                     cout<<"User Succesfully deleted!!!!"<<endl;
                 else
                     cout<<"Error User not deleted or dosent exist!!"<<endl;
+                break;
+            }
+            case 4:
+            {
+                string usr, email;
+                cout << "Enter Username to send" << endl;
+                cin >> usr;
+                cout << "Enter Email to send user" << endl;
+                cin >> usr;
+                stringstream ss;
+                ss << "Email" << "\n" << usr << "\n"<<email;
+                string userToEmail = ss.str();
+                strcpy(buf, userToEmail.c_str());
+                write(fd, buf, sizeof(buf));
+                read(fd, buf, sizeof(buf));
+                if (strcmp(buf, "Yes") == 0)
+                    cout<<"Email Succesfully sent!!!!"<<endl;
+                else
+                    cout<<"Error not sentt!!"<<endl;
                 break;
             }
         }
